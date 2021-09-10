@@ -44,8 +44,9 @@ shuffle(numsound);
 function Start() {
     app.stage.removeChild(button);
     var i = 0;
-    new Audio('/sound/instruction.mp3').play();
-    setTimeout(() =>  new Audio(numsound[0]).play(), 6000)
+    $('#audio').html('<audio autoplay><source src="/sound/instruction.mp3"></audio>');
+    //new Audio('/sound/instruction.mp3').play();
+    setTimeout(() =>  $('#audio').html('<audio autoplay><source src="'+numsound[0]+'"></audio>'), 6000)
     for (let y = 0; y < 300; y+=120) {
         for (let x = 0; x <300; x+=120){
             let rectangle = new px.Graphics();
@@ -94,24 +95,23 @@ function onClick(object) {
     if(currnum == clicknum){
         j++;
         object.tint = 0x80F195;
-        audionum = new Audio(numsound[j]);
-        setTimeout(() =>  audionum.play(), 1300)
         setTimeout(() =>  object.tint = 0xFFFFFF, 700)
         sumer += errors;
         errors = 0;
+        setTimeout(() => audionum = $('#audio').html('<audio autoplay><source src="'+numsound[j]+'"></audio>').play(), 1300);
     }else if (errors>=1){
-        new Audio('/sound/Ай.mp3').play();
         object.tint = 0xFF4D4D;
         setTimeout(() =>  object.tint = 0xFFFFFF, 300)
         app.stage.getChildAt(n).tint = 0x00ECEA;
         setTimeout(() =>  app.stage.getChildAt(n).tint = 0xFFFFFF, 700)
         errors++;
+        $('#audio').html('<audio autoplay><source src="/sound/Ай.mp3"></audio>').play();
     }
     else{
-        new Audio('/sound/Ой.mp3').play();
         object.tint = 0xFF4D4D;
         setTimeout(() =>  object.tint = 0xFFFFFF, 300)
         errors++;
+        $('#audio').html('<audio autoplay><source src="/sound/Ой.mp3"></audio>').play();
     }
 }
 
