@@ -2,6 +2,7 @@ const px = PIXI,
       app = new px.Application({ 
           antialias: true,
       });
+
 app.renderer.backgroundColor = 0x3A9CC2;
 app.renderer.resize(window.innerWidth, window.innerHeight);
 app.interactive = true;
@@ -29,6 +30,7 @@ const button = new px.Sprite(textureButton);
         .on('pointerout', onButtonOut);
 
 
+
 var numbers =[1,2,3,4,5,6,7,8,9],
     numsound = ['sound/1.mp3','sound/2.mp3', 'sound/3.mp3', 
     'sound/4.mp3', 'sound/5.mp3', 'sound/6.mp3','sound/7.mp3',
@@ -37,7 +39,6 @@ var numbers =[1,2,3,4,5,6,7,8,9],
 shuffle(numbers);
 
 shuffle(numsound);
-
 
 
 function Startgame() {
@@ -72,6 +73,7 @@ function Startgame() {
 var sumer = 0;
 var j = 0;
 var errors = 0;
+
 function onClick(object) {
     let i = app.stage.getChildIndex(object);
     var audionum = new Audio (numsound[j]);
@@ -116,10 +118,12 @@ function onClick(object) {
     }
 }
 
+
 function onButtonOver() {
     this.isOver = true;
     this.tint = 0xA0EE45;
 }
+
 function onButtonOut() {
     this.isOver = false;
     this.tint =  0xFFFFFF;
