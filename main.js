@@ -1,13 +1,8 @@
-
-const px = PIXI;
-
-const app = new px.Application({
-    width: 500, 
-    height: 500, 
-    backgroundColor: 0x1099bb,
-    antialias: true,
-});
-app.renderer.backgroundColor = 0x23395D;
+const px = PIXI,
+      app = new px.Application({ 
+          antialias: true,
+      });
+app.renderer.backgroundColor = 0x3A9CC2;
 app.renderer.resize(window.innerWidth, window.innerHeight);
 app.interactive = true;
 document.body.appendChild(app.view);
@@ -18,8 +13,8 @@ let style = new px.TextStyle({
     wordwrap:true,
 });
 
-const textureButton = PIXI.Texture.from('./btn.png');
-const button = new PIXI.Sprite(textureButton);
+const textureButton = px.Texture.from('btn.png');
+const button = new px.Sprite(textureButton);
 
     button.anchor.set(0.5);
     button.x = app.screen.width / 2;
@@ -29,24 +24,27 @@ const button = new PIXI.Sprite(textureButton);
     button.buttonMode = true;
     app.stage.addChild(button);
     button
-    .on('pointerdown', Start)
-    .on('pointerover', onButtonOver)
-    .on('pointerout', onButtonOut);
+        .on('pointerdown', Startgame)
+        .on('pointerover', onButtonOver)
+        .on('pointerout', onButtonOut);
 
 
-var numbers =[1,2,3,4,5,6,7,8,9];
+var numbers =[1,2,3,4,5,6,7,8,9],
+    numsound = ['sound/1.mp3','sound/2.mp3', 'sound/3.mp3', 
+    'sound/4.mp3', 'sound/5.mp3', 'sound/6.mp3','sound/7.mp3',
+    'sound/8.mp3','sound/9.mp3'];
+
 shuffle(numbers);
-var numsound = ['/sound/1.mp3','/sound/2.mp3', '/sound/3.mp3', 
-'/sound/4.mp3', '/sound/5.mp3', '/sound/6.mp3','/sound/7.mp3',
-'/sound/8.mp3','/sound/9.mp3'];
+
 shuffle(numsound);
 
-function Start() {
+
+
+function Startgame() {
     app.stage.removeChild(button);
-    var i = 0;
-    $('#audio').html('<audio autoplay><source src="./sound/instruction.mp3"></audio>');
-    //new Audio('/sound/instruction.mp3').play();
-    setTimeout(() =>  $('#audio').html('<audio autoplay><source src="'+numsound[0]+'"></audio>'), 6000)
+    let i = 0;
+    new Audio('sound/instruction.mp3').play();
+    setTimeout(() =>  new Audio(numsound[0]).play(), 6000)
     for (let y = 0; y < 300; y+=120) {
         for (let x = 0; x <300; x+=120){
             let rectangle = new px.Graphics();
@@ -69,8 +67,10 @@ function Start() {
         }
     }
 }
-var sumer=0;
-var j =0;
+
+
+var sumer = 0;
+var j = 0;
 var errors = 0;
 function onClick(object) {
     let i = app.stage.getChildIndex(object);
@@ -95,23 +95,24 @@ function onClick(object) {
     if(currnum == clicknum){
         j++;
         object.tint = 0x80F195;
+        audionum = new Audio(numsound[j]);
+        setTimeout(() =>  audionum.play(), 1300)
         setTimeout(() =>  object.tint = 0xFFFFFF, 700)
         sumer += errors;
         errors = 0;
-        setTimeout(() => audionum = $('#audio').html('<audio autoplay><source src="'+numsound[j]+'"></audio>').play(), 1300);
     }else if (errors>=1){
+        new Audio('sound/Ай.mp3').play();
         object.tint = 0xFF4D4D;
         setTimeout(() =>  object.tint = 0xFFFFFF, 300)
         app.stage.getChildAt(n).tint = 0x00ECEA;
         setTimeout(() =>  app.stage.getChildAt(n).tint = 0xFFFFFF, 700)
         errors++;
-        $('#audio').html('<audio autoplay><source src="./sound/Ай.mp3"></audio>').play();
     }
     else{
+        new Audio('sound/Ой.mp3').play();
         object.tint = 0xFF4D4D;
         setTimeout(() =>  object.tint = 0xFFFFFF, 300)
         errors++;
-        $('#audio').html('<audio autoplay><source src="./sound/Ой.mp3"></audio>').play();
     }
 }
 
@@ -126,11 +127,17 @@ function onButtonOut() {
 
 function shuffle(array) {
     var currentIndex = array.length,  randomIndex;
-  
     while (currentIndex != 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
       [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
     }
     return array;
+}
+
+window.onresize = function()
+{
+    app.renderer.resize(window.innerWidth, window.innerHeight);
+    button.x = app.screen.width / 2;
+    button.y = app.screen.height / 2;
 }
